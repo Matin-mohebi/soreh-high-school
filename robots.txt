@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://matin-mohebi.github.io/soreh-high-school/sitemap.xml

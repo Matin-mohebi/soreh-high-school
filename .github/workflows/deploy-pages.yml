@@ -3,12 +3,8 @@ name: Deploy site to GitHub Pages
 on:
   push:
     branches: [migration/soreh-school]
-    paths:
-      - 'site/**'
-      - '.github/workflows/deploy-pages.yml'
   workflow_dispatch:
 
-# حداقل دسترسی لازم برای انتشار در گیت‌هاب پیجز
 permissions:
   contents: read
   pages: write
@@ -31,10 +27,10 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload site folder
+      - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: '.'
 
       - name: Deploy to GitHub Pages
         id: deployment
