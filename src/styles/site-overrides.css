@@ -1,0 +1,36 @@
+/* =====================================================================
+   site-overrides.css — اصلاحات ظاهری وب‌سایت دبیرستان سوره
+   این فایل بعد از site.css بارگذاری می‌شود؛ برای بازتولید site.css
+   این فایل دست‌نخورده می‌ماند.
+   ===================================================================== */
+
+/* --- نوار بالا: جلوگیری از شکستن دوخطی آیتم‌ها --- */
+.cs .mark{white-space:nowrap}
+.cs .bar nav a,
+.cs .acts a,
+.cs .acts .userchip{white-space:nowrap}
+.cs .acts .userchip{
+  display:inline-block;
+  max-width:170px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  vertical-align:middle;
+  line-height:1.7;
+}
+/* در نمایشگرهای متوسط منو مخفی می‌شود (مثل رفتار قالب اصلی در موبایل) */
+@media(max-width:1020px){
+  .cs .bar nav{display:none}
+}
+
+/* --- کارت‌ها و بخش‌ها: جزئیات ریز --- */
+.cs .news-item time{margin-inline-end:8px}
+.cs .news-item .badge{margin-inline-end:8px}
+
+/* --- فرم‌ها: حالت فوکوس یکنواخت --- */
+.cs .auth input:not([type=checkbox]):focus,
+.cs .auth textarea:focus{border-color:#2189d2}
+
+/* --- جدول برنامه هفتگی در موبایل: حداقل اندازه مناسب --- */
+@media(max-width:700px){
+  .cs .sched table{min-width:560px}
+}

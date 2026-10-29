@@ -1,0 +1,266 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* =====================================================================
+   پوسته‌ی داشبورد دبیرستان سوره — هم‌رنگ قالب Class Stars
+   (سرمه‌ای #0a2347 و آبی آسمانی #2189d2 با پس‌زمینه‌ی روشن #f1f8ff)
+   ===================================================================== */
+:root {
+  --radius: 0.9rem;
+  --background: #f1f8ff;
+  --foreground: #0a2347;
+  --card: #ffffff;
+  --card-foreground: #0a2347;
+  --popover: #ffffff;
+  --popover-foreground: #0a2347;
+  --primary: #1d6fa8;
+  --primary-foreground: #eaf6ff;
+  --secondary: #dceeff;
+  --secondary-foreground: #0a2347;
+  --muted: #e8f2fb;
+  --muted-foreground: #51708c;
+  --accent: #d7ecfd;
+  --accent-foreground: #0b3a6b;
+  --destructive: #c2413b;
+  --destructive-foreground: #fff;
+  --border: #cfe4f6;
+  --input: #cfe4f6;
+  --ring: #2189d2;
+  --chart-1: #2189d2;
+  --chart-2: #5bb6f0;
+  --chart-3: #0a2347;
+  --chart-4: #9fd3f7;
+  --chart-5: #1677ba;
+  --sidebar: linear-gradient(160deg, #081d3c 0%, #0b2a52 60%, #124b80 100%);
+  --sidebar-foreground: #dbeeff;
+  --sidebar-primary: #2189d2;
+  --sidebar-primary-foreground: #eaf6ff;
+  --sidebar-accent: rgba(112, 199, 255, 0.14);
+  --sidebar-accent-foreground: #eaf6ff;
+  --sidebar-border: rgba(159, 211, 247, 0.18);
+  --sidebar-ring: #5bb6f0;
+}
+
+.dark {
+  --background: #071729;
+  --foreground: #dbeeff;
+  --card: #0c2137;
+  --card-foreground: #dbeeff;
+  --popover: #0c2137;
+  --popover-foreground: #dbeeff;
+  --primary: #4aa8e8;
+  --primary-foreground: #06162f;
+  --secondary: #10304e;
+  --secondary-foreground: #dbeeff;
+  --muted: #0f2b46;
+  --muted-foreground: #8fb3d0;
+  --accent: #12385c;
+  --accent-foreground: #cfeaff;
+  --destructive: #e0564f;
+  --destructive-foreground: #fff;
+  --border: #1c3d5f;
+  --input: #1c3d5f;
+  --ring: #4aa8e8;
+  --chart-1: #4aa8e8;
+  --chart-2: #70c7ff;
+  --chart-3: #9fd3f7;
+  --chart-4: #1677ba;
+  --chart-5: #2a6bb0;
+  --sidebar: linear-gradient(165deg, #050f1e 0%, #0a2138 60%, #0d3557 100%);
+  --sidebar-foreground: #cfe6fa;
+  --sidebar-primary: #4aa8e8;
+  --sidebar-primary-foreground: #06162f;
+  --sidebar-accent: rgba(112, 199, 255, 0.1);
+  --sidebar-accent-foreground: #dbeeff;
+  --sidebar-border: rgba(112, 199, 255, 0.14);
+  --sidebar-ring: #70c7ff;
+}
+
+body {
+  font-family: var(--font-vazir), Tahoma, sans-serif;
+  background-image: radial-gradient(ellipse at 50% 0, rgba(112, 199, 255, 0.12), transparent 55%);
+  background-attachment: fixed;
+}
+
+/* کارت‌های سه‌بعدی ملایم — زبان بصری قالب اصلی */
+.soreh-card {
+  border: 1px solid var(--border);
+  border-radius: 1.1rem;
+  background: var(--card);
+  box-shadow: 0 4px 0 rgba(122, 168, 207, 0.25), 0 14px 30px -12px rgba(7, 39, 76, 0.22);
+}
+
+.dark .soreh-card {
+  box-shadow: 0 4px 0 rgba(3, 14, 28, 0.5), 0 14px 30px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* نوار کنار (سایدبار) سرمه‌ای مثل نوار بالای سایت */
+.soreh-sidebar {
+  background: linear-gradient(160deg, #081d3c 0%, #0b2a52 60%, #124b80 100%);
+  color: #dbeeff;
+}
+.dark .soreh-sidebar {
+  background: linear-gradient(165deg, #050f1e 0%, #0a2138 60%, #0d3557 100%);
+}
+
+.soreh-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  padding: 0.55rem 0.8rem;
+  border-radius: 0.75rem;
+  color: #cfe6fa;
+  font-size: 0.92rem;
+  font-weight: 600;
+  transition: background 0.25s, color 0.25s, transform 0.25s;
+  text-align: right;
+}
+.soreh-sidebar-item:hover {
+  background: rgba(112, 199, 255, 0.12);
+  color: #fff;
+  transform: translateX(-2px);
+}
+.soreh-sidebar-item[data-active="true"] {
+  background: linear-gradient(135deg, #2a8fd8, #1677ba);
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(10, 35, 71, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* اسکرول‌بار */
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb { background: #9cc6e6; border-radius: 8px; border: 2px solid transparent; background-clip: content-box; }
+.dark *::-webkit-scrollbar-thumb { background: #24537c; background-clip: content-box; }
+html { scrollbar-color: #9cc6e6 transparent; }
+
+/* اعداد فارسی در جداول و آمار */
+.fa-num { font-feature-settings: "ss01"; }
+
+/* برچسب تصویر شاخص */
+.thumb-box {
+  width: 64px; height: 64px; border-radius: 0.8rem; overflow: hidden;
+  background: var(--secondary); border: 1px solid var(--border);
+  display: grid; place-items: center; color: var(--muted-foreground);
+}
+.thumb-box img { width: 100%; height: 100%; object-fit: cover; }

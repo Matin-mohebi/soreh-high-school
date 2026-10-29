@@ -1,0 +1,34 @@
+# --- اطلاعات محرمانه — هرگز کامیت نشوند ---
+.env
+.env.local
+.env.production
+
+# --- وابستگی‌ها و خروجی بیلد ---
+node_modules/
+.next/
+out/
+
+# --- دیتابیس و رسانه‌های محلی سرویس مدیریت ---
+db/
+*.sqlite
+*.sqlite3
+
+# --- لاگ‌ها و ابزارهای محلی ---
+*.log
+dev.log
+server.log
+tool-results/
+workspace/
+upload/
+download/
+.zscripts/
+skills/
+examples/
+mini-services/
+tests/
+wp-original/
+wordpress-ref/
+
+# --- سیستم‌عامل ---
+.DS_Store
+Thumbs.db

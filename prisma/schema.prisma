@@ -1,0 +1,152 @@
+// Prisma schema — دبیرستان سوره (Soreh High School) admin backend
+// SQLite database. Migrated from WordPress theme "Class Stars" + "Class Stars Toolkit".
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- Authentication ----------
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         String   @default("SUBSCRIBER") // ADMIN | EDITOR | SUBSCRIBER
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  sessions     Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+// ---------- Site content (mirrors the public static site) ----------
+
+// مدیر و معاونان (custom post type "staff" in the original theme)
+model StaffMember {
+  id        String   @id @default(cuid())
+  name      String
+  role      String   @default("") // سمت
+  bio       String   @default("")
+  photoUrl  String   @default("")
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// دانش‌آموزان برتر (custom post type "student" in the original theme)
+model Student {
+  id        String   @id @default(cuid())
+  name      String
+  rank      String   @default("")
+  grade     String   @default("")
+  note      String   @default("")
+  photoUrl  String   @default("")
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// اخبار و اطلاعیه‌ها (new capability for the school site)
+model NewsPost {
+  id          String   @id @default(cuid())
+  title       String
+  excerpt     String   @default("")
+  body        String   @default("")
+  important   Boolean  @default(false)
+  status      String   @default("DRAFT") // DRAFT | PUBLISHED
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// برگه‌های ایستا (custom pages shown on page.html?slug=...)
+model PageBlock {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  body      String   @default("")
+  showInNav Boolean  @default(false)
+  status    String   @default("PUBLISHED") // DRAFT | PUBLISHED
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// منوی ناوبری
+model MenuItem {
+  id    String @id @default(cuid())
+  label String
+  href  String
+  order Int    @default(0)
+}
+
+// برنامه هفتگی (weekly timetable)
+model ScheduleEntry {
+  id      String @id @default(cuid())
+  day     Int    @default(0) // 0=شنبه … 5=پنجشنبه
+  time    String @default("")
+  subject String @default("")
+  teacher String @default("")
+  order   Int    @default(0)
+}
+
+// کلید/مقدار تنظیمات سایت (متون بخش‌ها، آمار، فوتر، سئو، ظاهر، ابزارها)
+model Setting {
+  key       String   @id
+  value     String   @default("")
+  updatedAt DateTime @updatedAt
+}
+
+// ---------- Media library ----------
+
+model Media {
+  id           String   @id @default(cuid())
+  filename     String   @unique // stored file name under /media
+  originalName String
+  mime         String
+  size         Int
+  createdAt    DateTime @default(now())
+}
+
+// ---------- Incoming messages (contact form) ----------
+
+model Message {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @default("")
+  phone     String   @default("")
+  subject   String
+  body      String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+// ---------- Activity log ----------
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  username  String   @default("")
+  action    String // LOGIN | LOGOUT | CREATE | UPDATE | DELETE | PUBLISH | UPLOAD | SEED
+  entity    String   @default("") // staff | student | news | page | menu | settings | media | user | message | schedule
+  entityId  String   @default("")
+  detail    String   @default("")
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
