@@ -7,6 +7,7 @@
         var MENU = [
                 { t: 'صفحه اصلی', h: './index.html' },
                 { t: 'درباره هنرستان', h: './about.html' },
+                { t: 'معرفی رشته‌ها', h: './majors.html' },
                 { t: 'آموزشگاه فنی و حرفه‌ای', h: './vocational.html' },
                 { t: 'مشاوره و هدایت تحصیلی', h: './counseling.html' },
                 { t: 'ثبت‌نام آنلاین', h: './register.html' },
@@ -110,18 +111,62 @@
         var CATS = (window.SOREH && window.SOREH.catLabels) || {};
         var CAT_ORDER = ['honors', 'events', 'courses', 'guidance', 'exams', 'school'];
 
-        function newsItemHTML(n) {
-                return '<article class="news-item" data-reveal>' +
+        /* مودال جزئیات خبر (همه آیتم‌های خبری کلیک‌پذیر هستند) */
+        function newsModal(i) {
+                var n = NEWS[i];
+                if (!n) return;
+                var old = document.querySelector('.news-modal');
+                if (old) old.remove();
+                var link = location.origin + location.pathname + '#n-' + i;
+                var ov = el('<div class="news-modal" role="dialog" aria-modal="true" aria-label="جزئیات خبر">' +
+                        '<div class="news-modal__backdrop" data-close></div>' +
+                        '<div class="news-modal__box">' +
+                        '<button class="news-modal__x" type="button" aria-label="بستن" data-close>' +
+                        '<svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>' +
+                        '<time>' + faDate(n.d) + '</time>' +
+                        '<h3>' + esc(n.t) + '</h3>' +
+                        '<p class="cat-row"><span class="cat">' + esc(CATS[n.c] || 'خبر') + '</span></p>' +
+                        '<p class="news-modal__body">این خبر در آرشیو وب‌سایت هنرستان‌های سوره زنجان ثبت شده است. شرح کامل این خبر به‌همراه تصاویر، در سامانه اصلی هنرستان منتشر شده است.</p>' +
+                        '<p class="news-modal__acts">' +
+                        '<a class="btn btn--sm" href="' + PORTAL + '" target="_blank" rel="noopener">متن کامل در سامانه اصلی ↗</a>' +
+                        '<button class="btn btn--sm btn--ghost" type="button" data-copy="' + link + '">کپی پیوند خبر</button>' +
+                        '</p>' +
+                        '</div></div>');
+                document.body.appendChild(ov);
+                document.body.style.overflow = 'hidden';
+                ov.addEventListener('click', function (e) {
+                        if (e.target.closest('[data-close]')) { ov.remove(); document.body.style.overflow = ''; }
+                        if (e.target.closest('[data-copy]')) {
+                                var txt = e.target.closest('[data-copy]').getAttribute('data-copy');
+                                var done = function () { e.target.closest('[data-copy]').textContent = 'کپی شد ✓'; };
+                                if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, done);
+                                else { done(); }
+                        }
+                });
+                document.addEventListener('keydown', function esc2(e) {
+                        if (e.key === 'Escape') { var m = document.querySelector('.news-modal'); if (m) { m.remove(); document.body.style.overflow = ''; } document.removeEventListener('keydown', esc2); }
+                });
+        }
+
+        function newsItemHTML(n, i, base) {
+                var href = base ? base + '#n-' + i : '#n-' + i;
+                return '<a class="news-item" href="' + href + '"' + (base ? '' : ' id="n-' + i + '"') + ' data-reveal>' +
                         '<time>' + faDate(n.d) + '</time>' +
                         '<div><p class="t">' + esc(n.t) + '</p>' +
-                        '<p class="meta"><span class="cat">' + esc(CATS[n.c] || 'خبر') + '</span></p></div>' +
-                        '</article>';
+                        '<p class="meta"><span class="cat">' + esc(CATS[n.c] || 'خبر') + '</span>' +
+                        (base ? '' : '<span class="more">جزئیات خبر ' + icon('go') + '</span>') + '</p></div>' +
+                        '</a>';
         }
+        function icon2(name) {
+                return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>';
+        }
+        function icon(name) { return icon2(name); }
         function mountNews(sel, limit) {
                 var box = document.querySelector(sel);
                 if (!box) return;
+                var isHome = !!limit;
                 var items = limit ? NEWS.slice(0, limit) : NEWS;
-                box.innerHTML = items.map(newsItemHTML).join('');
+                box.innerHTML = items.map(function (n, k) { return newsItemHTML(n, k, isHome ? './news.html' : ''); }).join('');
                 var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
                         es.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); } });
                 }, { threshold: 0.08 }) : null;
@@ -133,6 +178,18 @@
 
         /* صفحه اصلی: آخرین مطالب + متولدین امروز */
         if (document.querySelector('[data-news]')) mountNews('[data-news]', 7);
+
+        /* لینک عمیق: باز شدن خودکار جزئیات خبر با news.html#n-<i> */
+        if (document.querySelector('[data-news-filters]') && location.hash.indexOf('#n-') === 0) {
+                var ni = parseInt(location.hash.replace('#n-', ''), 10);
+                if (!isNaN(ni) && NEWS[ni]) {
+                        setTimeout(function () {
+                                var target = document.getElementById('n-' + ni);
+                                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                setTimeout(function () { newsModal(ni); }, 450);
+                        }, 250);
+                }
+        }
         var bday = document.querySelector('[data-bday]');
         if (bday && window.SOREH && window.SOREH.bdays) {
                 var list = window.SOREH.bdays;
@@ -172,6 +229,12 @@
                 var emptyEl = wrap.querySelector('.empty');
                 var state = { y: '*', c: '*', q: '' };
 
+                /* پشتیبانی از جستجوی عمیق: news.html?q=کلیدواژه */
+                try {
+                        var qq = new URLSearchParams(location.search).get('q');
+                        if (qq) { state.q = qq.trim(); wrap.querySelector('input').value = state.q; }
+                } catch (err) { /* بی‌اهمیت */ }
+
                 function apply() {
                         var out = NEWS.filter(function (n) {
                                 if (state.y !== '*' && faYear(n.d) !== state.y) return false;
@@ -180,15 +243,20 @@
                                 return true;
                         });
                         list.innerHTML = out.map(function (n) {
-                                return '<article class="news-item">' +
-                                        '<time>' + faDate(n.d) + '</time>' +
-                                        '<div><p class="t">' + esc(n.t) + '</p>' +
-                                        '<p class="meta"><span class="cat">' + esc(CATS[n.c] || 'خبر') + '</span></p></div>' +
-                                        '</article>';
+                                var i = NEWS.indexOf(n);
+                                return newsItemHTML(n, i, '');
                         }).join('');
                         countEl.textContent = 'نمایش ' + faDigits(out.length) + ' خبر از مجموع ' + faDigits(NEWS.length) + ' خبر و اطلاعیه ثبت‌شده';
                         emptyEl.hidden = out.length > 0;
                 }
+
+                /* کلیک روی هر خبر = باز شدن جزئیات */
+                list.addEventListener('click', function (e) {
+                        var a = e.target.closest('a.news-item');
+                        if (!a) return;
+                        e.preventDefault();
+                        newsModal(parseInt(String(a.getAttribute('href')).replace('#n-', ''), 10) || 0);
+                });
 
                 wrap.addEventListener('click', function (e) {
                         var chip = e.target.closest('.chip');
