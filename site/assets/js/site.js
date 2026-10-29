@@ -216,7 +216,7 @@
 
   /* ---------- برگه‌های ایستا (?slug=) ---------- */
   function renderPage() {
-    var wrap = $('[data-page]');
+    var wrap = $('main [data-page]');
     if (!wrap) return;
     var slug = new URLSearchParams(location.search).get('slug') || '';
     var pages = get('pages') || [];
