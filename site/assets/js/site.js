@@ -199,6 +199,8 @@
     var wrap = $('[data-news]');
     if (!wrap) return;
     var items = (get('news.items') || []);
+    var limit = parseInt(wrap.getAttribute('data-news-limit') || '0', 10);
+    if (limit > 0) items = items.slice(0, limit);
     if (!items.length) {
       wrap.innerHTML = '<p class="empty-note">هنوز خبر یا اطلاعیه‌ای ثبت نشده است.</p>';
       return;

@@ -62,3 +62,6 @@
 .news-item details>summary{cursor:pointer;font-weight:700;color:var(--accent);list-style:none}
 .news-item details>summary::-webkit-details-marker{display:none}
 .news-item details[open]>summary{margin-bottom:8px}
+
+/* --- لینک «مشاهده همه اخبار» در صفحه اصلی --- */
+.news-more{margin-top:6px}
