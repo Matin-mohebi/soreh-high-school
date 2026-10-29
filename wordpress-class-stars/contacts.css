@@ -1,0 +1,50 @@
+.cs-school-contacts {
+  direction: rtl;
+  color: #0a2347;
+  background: linear-gradient(145deg, #ffffff, #e8f4ff);
+  border: 1px solid rgba(33, 137, 210, .22);
+  border-radius: 20px;
+  padding: clamp(18px, 3vw, 30px);
+  box-shadow: 0 8px 22px rgba(7, 39, 76, .12);
+  font-family: Vazirmatn, Tahoma, sans-serif;
+}
+.cs-school-contacts h2 {
+  margin: 0 0 18px;
+  font-size: clamp(1.25rem, 3vw, 1.8rem);
+  line-height: 1.5;
+}
+.cs-school-contacts__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.cs-school-contacts__item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 14px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(112, 199, 255, .12);
+  border: 1px solid rgba(33, 137, 210, .16);
+}
+.cs-school-contacts__label { font-weight: 600; }
+.cs-school-contacts__phone {
+  direction: ltr;
+  unicode-bidi: isolate;
+  color: #1265a8;
+  font-weight: 800;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+.cs-school-contacts__website { margin: 18px 0 0; }
+.cs-school-contacts__website a { color: #1265a8; font-weight: 700; }
+.cs-school-contacts a:focus-visible {
+  outline: 3px solid #2189d2;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
