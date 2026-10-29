@@ -1,0 +1,12 @@
+{
+  "name": "soreh-high-school",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "وب‌سایت دبیرستان سوره — Soreh High School (migrated from WordPress Class Stars)",
+  "scripts": {
+    "build": "node tools/build.js",
+    "start": "node admin-server/server.js",
+    "preview": "node tools/preview-server.js"
+  }
+}

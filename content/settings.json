@@ -1,0 +1,63 @@
+{
+  "site": {
+    "schoolName": "دبیرستان سوره",
+    "schoolNameEn": "Soreh High School",
+    "siteUrl": "https://matin-mohebi.github.io/soreh-high-school/",
+    "lang": "fa-IR"
+  },
+  "hero": {
+    "text": "جایی برای دیده شدن بهترین‌ها؛ مدیران، معاونان و دانش‌آموزان برتر کلاس.",
+    "image": ""
+  },
+  "about": {
+    "title": "مدرسه‌ای که یادگیری را جدی می‌گیرد",
+    "text": "اینجا چند خط درباره تاریخچه، هدف و روش آموزشی مدرسه بنویسید.",
+    "stats": [
+      { "n": "1200", "label": "دانش‌آموز" },
+      { "n": "80", "label": "معلم" },
+      { "n": "25", "label": "سال سابقه" }
+    ]
+  },
+  "sections": {
+    "staffTitle": "مدیر و معاونان",
+    "staffText": "تیمی که مدرسه را اداره می‌کند.",
+    "gateStaffText": "با مدیر و معاونان آشنا شوید",
+    "studentsTitle": "دانش‌آموزان برتر",
+    "studentsText": "کسانی که با تلاش خودشان الگوی بقیه شدند.",
+    "gateStudentsText": "برترین‌های کلاس را ببینید"
+  },
+  "footer": {
+    "address": "",
+    "phone": "",
+    "note": "همه حقوق محفوظ است."
+  },
+  "menu": [
+    { "label": "درباره", "href": "#about" },
+    { "label": "مدیر و معاونان", "href": "#staff" },
+    { "label": "دانش‌آموزان", "href": "#students" },
+    { "label": "اطلاعیه‌ها", "href": "#announcements" }
+  ],
+  "appearance": {
+    "logo": "",
+    "favicon": ""
+  },
+  "seo": {
+    "title": "دبیرستان سوره | Soreh High School",
+    "description": "وب‌سایت رسمی دبیرستان سوره — معرفی مدیریت، معاونان و دانش‌آموزان برتر مدرسه.",
+    "keywords": "دبیرستان سوره, Soreh High School, مدرسه, دانش‌آموزان برتر",
+    "ogImage": "",
+    "sitemap": true
+  },
+  "toolkit": {
+    "liveSearch": true,
+    "progressBar": true,
+    "backToTop": true,
+    "counters": true,
+    "reveal": true
+  },
+  "join": {
+    "enabled": true,
+    "title": "عضو خانواده مدرسه شوید",
+    "text": "با ساخت حساب، از اخبار و اطلاعیه‌های مدرسه باخبر بمانید."
+  }
+}
