@@ -126,9 +126,10 @@ function showLogin() {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     try {
-      await apiSend('login', { user: u.value.trim(), pass: p.value });
+      const r = await apiSend('login', { user: u.value.trim(), pass: p.value });
       m.close();
       state.mode = 'connected';
+      state.user = r.user || u.value.trim();
       await ctx.refresh();
       renderBadge(); renderUser();
       toast('خوش آمدید، ' + state.user);

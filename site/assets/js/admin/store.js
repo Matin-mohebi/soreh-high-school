@@ -99,7 +99,11 @@ export async function detectMode() {
   try {
     const s = await apiGet('session');
     if (s && s.authenticated) { state.mode = 'connected'; state.user = s.user; }
-  } catch { state.mode = 'prototype'; }
+  } catch (e) {
+    /* 401 = سرویس موجود است ولی نشست ندارد → حالت متصل با فرم ورود
+       404/خطای دیگر = میزبانی استاتیک → حالت پیش‌نمایش */
+    state.mode = (e && e.status === 401) ? 'connected' : 'prototype';
+  }
   return state.mode;
 }
 

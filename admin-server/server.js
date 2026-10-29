@@ -311,8 +311,9 @@ const server = createServer(async (req, res) => {
     }
 
     /* ================= فایل‌های استاتیک از dist ================= */
-    if (pathName.startsWith('/assets/') || pathName.startsWith('/media/') || pathName === '/favicon.svg' || pathName === '/robots.txt' || pathName === '/sitemap.xml') {
+    if (pathName.startsWith('/assets/') || pathName.startsWith('/media/') || pathName.startsWith('/content/') || pathName === '/favicon.svg' || pathName === '/robots.txt' || pathName === '/sitemap.xml') {
       const distFile = pathName === '/favicon.svg' ? 'assets/img/favicon.svg' : pathName.replace(/^\//, '');
+      if (pathName.startsWith('/content/') && serveStatic(res, CONTENT_DIR, distFile)) return;
       if (serveStatic(res, DIST_DIR, distFile)) return;
       if (pathName.startsWith('/media/') && serveStatic(res, SITE_DIR, distFile)) return; /* رسانه‌ی تازه آپلودشده */
       return html(res, 404, render404(siteData(), { depth: 0 }));
