@@ -331,6 +331,199 @@
                 });
         }
 
+        /* ---------- اسلایدر سه‌بعدی (کاورفلو راست‌به‌چپ) ---------- */
+        /* کارت وسط بزرگ‌تر، کارت‌های کناری بخشی از دید؛ جابه‌جایی با کشیدن
+           انگشت/ماوس، فلش‌ها، نقطه‌ها و کلیدهای جهت‌دار. کلیک روی کارت کناری
+           آن را به وسط می‌آورد و کلیک روی کارت وسط، لینک خودش را باز می‌کند. */
+        (function () {
+                var grids = [].slice.call(document.querySelectorAll('.cards[data-slider3d]'));
+                if (!grids.length) return;
+
+                grids.forEach(function (grid) {
+                        if (grid.getAttribute('data-s3')) return;
+                        grid.setAttribute('data-s3', '1');
+
+                        var cards = [].slice.call(grid.children).filter(function (c) { return c.classList.contains('card'); });
+                        var n = cards.length;
+                        if (n < 2) return;
+
+                        var label = grid.getAttribute('data-slider3d') || 'اسلایدر';
+                        var wrap = document.createElement('div');
+                        wrap.className = 'slider3d';
+                        grid.parentNode.insertBefore(wrap, grid);
+
+                        var prevBtn = document.createElement('button');
+                        prevBtn.type = 'button';
+                        prevBtn.className = 'slider3d__btn slider3d__btn--prev';
+                        prevBtn.setAttribute('aria-label', 'اسلاید قبلی');
+                        prevBtn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>';
+
+                        var nextBtn = document.createElement('button');
+                        nextBtn.type = 'button';
+                        nextBtn.className = 'slider3d__btn slider3d__btn--next';
+                        nextBtn.setAttribute('aria-label', 'اسلاید بعدی');
+                        nextBtn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>';
+
+                        var stage = document.createElement('div');
+                        stage.className = 'slider3d__stage';
+                        stage.setAttribute('role', 'group');
+                        stage.setAttribute('aria-label', label);
+                        stage.tabIndex = 0;
+
+                        var track = document.createElement('div');
+                        track.className = 'slider3d__track';
+
+                        wrap.appendChild(stage);
+                        stage.appendChild(track);
+                        track.appendChild(grid);
+                        grid.classList.add('slider3d__grid');
+                        stage.appendChild(prevBtn);
+                        stage.appendChild(nextBtn);
+
+                        var nav = document.createElement('div');
+                        nav.className = 'slider3d__nav';
+                        var dots = [];
+                        for (var di = 0; di < n; di++) {
+                                (function (idx) {
+                                        var d = document.createElement('button');
+                                        d.type = 'button';
+                                        d.className = 'slider3d__dot';
+                                        d.setAttribute('aria-label', 'نمایش مورد ' + faDigits(idx + 1));
+                                        d.addEventListener('click', function () { go(idx - active); });
+                                        nav.appendChild(d);
+                                        dots.push(d);
+                                })(di);
+                        }
+                        wrap.appendChild(nav);
+
+                        var active = 0, dragDX = 0, dragging = false, moved = false, captured = false;
+                        var startX = 0, lastDragEnd = 0;
+                        var step = 240, maxSide = 2;
+
+                        /* فاصله‌ی آیتم از اسلاید فعال با در نظر گرفتن چرخش بی‌پایان */
+                        function signedOffset(i) {
+                                var o = (i - active) % n;
+                                if (o > n / 2) o -= n;
+                                if (o < -n / 2) o += n;
+                                return o;
+                        }
+
+                        function layout() {
+                                var vw = stage.clientWidth || 900;
+                                var mobile = vw < 700;
+                                var cardW = mobile ? Math.min(vw * 0.72, 420) : Math.min(Math.max(270, vw * 0.42), 400);
+                                step = cardW * (mobile ? 0.6 : 0.52);
+                                maxSide = mobile ? 1 : 2;
+                                cards.forEach(function (c) { c.style.width = cardW + 'px'; });
+                                var h = 0;
+                                cards.forEach(function (c) { h = Math.max(h, c.offsetHeight); });
+                                track.style.height = h + 'px';
+                                render(true);
+                        }
+
+                        function render(instant) {
+                                if (instant) track.classList.add('no-anim');
+                                cards.forEach(function (card, i) {
+                                        var o = signedOffset(i);
+                                        var ao = Math.abs(o);
+                                        var hidden = ao > maxSide;
+                                        var x = -o * step + dragDX;                       /* بعدی سمت چپ (راست‌به‌چپ) */
+                                        var y = Math.min(ao, 3) * 12;
+                                        var z = -Math.min(ao, 3) * 120;
+                                        var rot = -Math.sign(o) * 34 * Math.min(ao, 1);
+                                        var sc = 1 - Math.min(ao, 3) * 0.08;
+                                        card.style.transform = 'translate(-50%,-50%) translate3d(' + x.toFixed(1) + 'px,' + y + 'px,' + z + 'px) rotateY(' + rot.toFixed(1) + 'deg) scale(' + sc.toFixed(3) + ')';
+                                        card.style.opacity = hidden ? '0' : (ao === 0 ? '1' : (ao === 1 ? '0.92' : '0.62'));
+                                        card.style.zIndex = String(60 - Math.min(ao, 5) * 10);
+                                        card.classList.toggle('is-active', ao === 0);
+                                        card.classList.toggle('is-side', ao > 0 && !hidden);
+                                        card.classList.toggle('is-hidden', hidden);
+                                        card.setAttribute('aria-hidden', hidden ? 'true' : 'false');
+                                        if (ao === 0) card.removeAttribute('tabindex');
+                                        else card.setAttribute('tabindex', '-1');
+                                        dots[i].classList.toggle('is-active', ao === 0);
+                                        if (ao === 0) dots[i].setAttribute('aria-current', 'true');
+                                        else dots[i].removeAttribute('aria-current');
+                                });
+                                if (instant) {
+                                        void track.offsetWidth;
+                                        track.classList.remove('no-anim');
+                                }
+                        }
+
+                        function go(dir) { active = (active + dir + n) % n; render(); }
+
+                        prevBtn.addEventListener('click', function () { go(-1); });
+                        nextBtn.addEventListener('click', function () { go(1); });
+
+                        stage.addEventListener('keydown', function (e) {
+                                if (e.key === 'ArrowLeft') { e.preventDefault(); go(1); }
+                                else if (e.key === 'ArrowRight') { e.preventDefault(); go(-1); }
+                        });
+
+                        /* کلیک روی کارت کناری = آوردن آن به وسط؛ کارت وسط لینک می‌ماند */
+                        grid.addEventListener('click', function (e) {
+                                var card = e.target.closest('.card');
+                                if (!card) return;
+                                if (moved && Date.now() - lastDragEnd < 350) { e.preventDefault(); return; }
+                                var i = cards.indexOf(card);
+                                if (i < 0 || i === active) return;
+                                e.preventDefault();
+                                go(i - active);
+                        });
+
+                        stage.addEventListener('dragstart', function (e) { e.preventDefault(); });
+
+                        /* کشیدن با انگشت یا ماوس */
+                        stage.addEventListener('pointerdown', function (e) {
+                                if (e.pointerType === 'mouse' && e.button !== 0) return;
+                                dragging = true; moved = false; captured = false;
+                                startX = e.clientX;
+                                dragDX = 0;
+                                stage.classList.add('is-dragging');
+                                track.classList.add('no-anim');
+                        });
+                        stage.addEventListener('pointermove', function (e) {
+                                if (!dragging) return;
+                                dragDX = e.clientX - startX;
+                                if (!captured && Math.abs(dragDX) > 8) {
+                                        captured = true;
+                                        moved = true;
+                                        try { stage.setPointerCapture(e.pointerId); } catch (err) { /* بی‌اهمیت */ }
+                                }
+                                if (captured) render();
+                        });
+                        function endDrag() {
+                                if (!dragging) return;
+                                dragging = false;
+                                stage.classList.remove('is-dragging');
+                                track.classList.remove('no-anim');
+                                var dx = dragDX;
+                                dragDX = 0;
+                                if (captured) {
+                                        lastDragEnd = Date.now();
+                                        var th = Math.min(90, step * 0.28);
+                                        if (dx < -th) go(1);
+                                        else if (dx > th) go(-1);
+                                        else render();
+                                }
+                        }
+                        stage.addEventListener('pointerup', endDrag);
+                        stage.addEventListener('pointercancel', endDrag);
+                        window.addEventListener('pointerup', endDrag);
+
+                        /* اندازه‌گیری اولیه + تغییر اندازه + پایان بارگذاری فونت‌ها */
+                        layout();
+                        var rT;
+                        window.addEventListener('resize', function () {
+                                clearTimeout(rT);
+                                rT = setTimeout(layout, 120);
+                        });
+                        if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { layout(); });
+                        window.addEventListener('load', layout);
+                });
+        })();
+
         /* ---------- سال جاری پاورقی ---------- */
         var y = document.querySelector('[data-year]');
         if (y) y.textContent = faDigits('1405');
