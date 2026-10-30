@@ -335,3 +335,22 @@
         var y = document.querySelector('[data-year]');
         if (y) y.textContent = faDigits('1405');
 })();
+
+/* ---------- درخشش بخش هدف هنگام ورود با #hash (مثلاً majors.html#r-sewing) ---------- */
+(function () {
+        'use strict';
+        function flash() {
+                if (location.hash.length < 2) return;
+                var id;
+                try { id = decodeURIComponent(location.hash.slice(1)); } catch (e) { return; }
+                var t = document.getElementById(id);
+                if (!t) return;
+                setTimeout(function () {
+                        t.classList.add('is-flash');
+                        setTimeout(function () { t.classList.remove('is-flash'); }, 2400);
+                }, 300);
+        }
+        if (document.readyState === 'complete') flash();
+        else window.addEventListener('load', flash);
+        window.addEventListener('hashchange', flash);
+})();
