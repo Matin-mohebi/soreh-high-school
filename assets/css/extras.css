@@ -205,3 +205,63 @@ a.news-item:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 @media (prefers-reduced-motion:reduce){
         .news-modal__backdrop,.news-modal__box{animation:none}
 }
+
+/* =====================================================================
+   اسلایدر سه‌بعدی (کاورفلو راست‌به‌چپ) — کارت وسط بزرگ‌تر، کارت‌های کناری
+   بخشی از دید، جابه‌جایی با کشیدن انگشت یا فلش‌ها
+===================================================================== */
+.slider3d{position:relative;margin-top:clamp(4px,1.5vw,14px)}
+.slider3d__stage{position:relative;perspective:1300px;transform-style:preserve-3d;overflow:hidden;margin:0 calc(-1*var(--pad));padding:clamp(20px,3vw,40px) 0 clamp(30px,4vw,52px);touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none;outline:none}
+.slider3d__stage.is-dragging{cursor:grabbing}
+.slider3d__stage:focus-visible{outline:3px solid #8bd7ff;outline-offset:-3px;border-radius:18px}
+.slider3d__track{position:relative;transform-style:preserve-3d}
+.slider3d__track.no-anim .card{transition:none!important}
+.slider3d__grid{display:block!important;gap:0}
+.slider3d .card{position:absolute;top:50%;left:50%;width:320px;translate:none;transform:translate(-50%,-50%);will-change:transform,opacity;transition:transform .55s var(--ease),opacity .45s var(--ease),box-shadow .35s var(--ease),border-color .35s var(--ease)}
+.slider3d .card:hover{translate:none;border-color:#b5e4ff}
+.slider3d .card.is-active{box-shadow:0 8px 0 #a4cdeb,0 12px 0 #609bd0,0 40px 58px -12px rgba(7,39,76,.42),inset 0 2px 0 #fff}
+.slider3d .card.is-side{pointer-events:auto;filter:saturate(.92)}
+.slider3d .card.is-hidden{pointer-events:none}
+@media(hover:hover){
+        .slider3d .card.is-active:hover{box-shadow:0 10px 0 #a4cdeb,0 14px 0 #609bd0,0 48px 66px -12px rgba(7,39,76,.46),inset 0 2px 0 #fff}
+}
+
+/* فلش‌های اسلایدر */
+.slider3d__btn{position:absolute;top:50%;translate:0 -50%;z-index:140;width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.85);background:var(--card);color:#0f5ca3;display:grid;place-items:center;cursor:pointer;padding:0;box-shadow:0 4px 0 #b4d7f2,0 12px 22px rgba(8,28,58,.28),inset 0 2px 0 #fff;transition:translate .25s var(--ease),box-shadow .25s var(--ease),background .25s}
+.slider3d__btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.slider3d__btn:hover{background:#fff;box-shadow:0 6px 0 #a4cdeb,0 16px 26px rgba(8,28,58,.32),inset 0 2px 0 #fff}
+.slider3d__btn:active{translate:0 calc(-50% + 2px)}
+.slider3d__btn--next{left:clamp(6px,1.6vw,22px)}   /* بعدی: سمت چپ (چیدمان راست‌به‌چپ) */
+.slider3d__btn--prev{right:clamp(6px,1.6vw,22px)}  /* قبلی: سمت راست */
+@media(max-width:700px){
+        .slider3d__btn{width:42px;height:42px}
+        .slider3d__btn svg{width:18px;height:18px}
+}
+
+/* نقطه‌های ناوبری */
+.slider3d__nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;margin-top:2px}
+.slider3d__dot{width:12px;height:12px;padding:0;border-radius:50%;border:1px solid rgba(25,118,200,.4);background:#fff;cursor:pointer;box-shadow:0 2px 0 rgba(180,213,240,.9);transition:background .25s,transform .25s,border-color .25s}
+.slider3d__dot:hover{background:var(--sand)}
+.slider3d__dot.is-active{background:linear-gradient(180deg,#3a9ee6 0%,#1d80d0 55%,#1263b0 100%);border-color:transparent;transform:scale(1.3);box-shadow:0 3px 0 #0b4a8a}
+.slider3d__count{font-size:14px;font-weight:700;color:#27476e;margin-inline-start:10px;min-width:52px;text-align:center}
+
+@media (prefers-reduced-motion:reduce){
+        .slider3d .card,.slider3d__btn,.slider3d__dot{transition:none!important}
+}
+
+/* =====================================================================
+   افتخارات صفحه اصلی — «تعدادی از افتخارات مدرسه سوره» + گالری تصاویر
+===================================================================== */
+.home-honors{padding:var(--sec) var(--pad);background:var(--paper);position:relative;overflow:hidden;isolation:isolate}
+.home-honors>*{position:relative;z-index:1}
+.home-honors::before{content:"";position:absolute;z-index:0;pointer-events:none;width:clamp(60px,7vw,110px);aspect-ratio:1/1.1547;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:linear-gradient(120deg,rgba(255,255,255,.38),rgba(255,255,255,0) 45%),conic-gradient(from -60deg at 50% 50%,#a6dfff 0 120deg,#2f8fdc 120deg 240deg,#12569c 240deg 360deg);animation:cs-float 9s ease-in-out infinite;left:4%;top:6%;opacity:.5}
+.honor-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:clamp(20px,3vw,36px)}
+.honor-card{position:relative;margin:0;border-radius:26px;overflow:hidden;background:var(--card);border:1px solid rgba(255,255,255,.94);box-shadow:0 5px 0 #b4d7f2,0 8px 0 #78add8,0 24px 38px -10px rgba(7,39,76,.3),inset 0 2px 0 #fff;transition:translate .35s var(--ease),box-shadow .35s var(--ease)}
+.honor-card:hover{translate:0 -8px;box-shadow:0 7px 0 #a4cdeb,0 10px 0 #609bd0,0 34px 48px -9px rgba(7,39,76,.38),inset 0 2px 0 #fff}
+.honor-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-bottom:1px solid rgba(255,255,255,.9)}
+.honor-card .medal{position:absolute;top:14px;inset-inline-start:14px;z-index:2;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#0f5ca3;background:rgba(255,255,255,.94);border:1px solid rgba(25,118,200,.25);padding:4px 13px;border-radius:999px;box-shadow:0 3px 8px rgba(8,28,58,.22)}
+.honor-card .medal::before{content:"★";font-size:12px;color:#e2a93b}
+.honor-card figcaption{padding:16px 20px 20px}
+.honor-card figcaption b{display:block;font-size:1.12rem;margin-bottom:5px}
+.honor-card figcaption span{display:block;font-size:14.5px;line-height:1.95;color:#27476e}
+.honors-more{margin-top:clamp(28px,4vw,44px)}
